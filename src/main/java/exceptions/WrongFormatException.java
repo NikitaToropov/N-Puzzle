@@ -1,4 +1,4 @@
-package map_reading;
+package exceptions;
 
 /**
  * Исключение для обработки ошибок форматрирования.

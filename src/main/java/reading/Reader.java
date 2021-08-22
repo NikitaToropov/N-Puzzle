@@ -1,7 +1,8 @@
-package map_reading;
+package reading;
+
+import exceptions.WrongFormatException;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-import map_reading.Reader;
+import reading.Reader;
 
 import java.io.IOException;
 
