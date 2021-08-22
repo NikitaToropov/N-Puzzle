@@ -1,10 +1,13 @@
 package map_reading;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Reader {
 
@@ -18,13 +21,20 @@ public class Reader {
 
 
     public int[][] readInput(String path) throws IOException {
-        List<String> lines = readFileLineByLine(path);
-        lines.forEach(System.out::println);
+        List<List<Integer>> lines = readFileLineByLine(path);
+        for (List<Integer> line:
+             lines) {
+            for (Integer i :
+                    line) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+        }
         return null;
     }
 
-    private List<String> readFileLineByLine(String path) throws IOException {
-        List<String> lines = new ArrayList<>();
+    private List<List<Integer>> readFileLineByLine(String path) throws IOException {
+        List<List<Integer>> lines = new ArrayList<>();
         File file = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
@@ -33,11 +43,16 @@ public class Reader {
                 continue;
             Matcher matcher = CLEAR_LINE_PATTERN.matcher(line);
             if (matcher.find())
-                lines.add(matcher.group());
+                lines.add(parseCleanLine(matcher.group()));
             else
                 throw new WrongFormatException();
         }
         return lines;
+    }
+
+    private List<Integer> parseCleanLine(String line) {
+        String[] numbers = line.split("\\s+");
+        return Arrays.stream(numbers).map(Integer::parseInt).collect(Collectors.toList());
     }
 }
 
