@@ -1,5 +1,6 @@
 package reading;
 
+import dto.Board;
 import exceptions.WrongFormatException;
 
 import java.io.*;
@@ -21,17 +22,36 @@ public class Reader {
     public static final Pattern CLEAR_LINE_PATTERN = Pattern.compile(CLEAR_LINE_REGEX);
 
 
-    public int[][] readInput(String path) throws IOException {
+    public Board readInput(String path) throws IOException {
         List<List<Integer>> lines = readFileLineByLine(path);
-        for (List<Integer> line:
-             lines) {
-            for (Integer i :
-                    line) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
+        return crateGameBoard(lines);
+    }
+
+    private Board crateGameBoard(List<List<Integer>> lines) {
+        int size = lines.get(0).get(0);
+        int[][] start = getStart(lines, size);
+        return new Board(start, size, 0, 0);
+    }
+
+    private int[] getFinish(int len) {
+        int[] content = new int[len];
+        for (int i = 0; i < len - 1; i++) {
+            content[i] = i + 1;
         }
-        return null;
+        content[len - 1] = 0;
+        return content;
+    }
+
+    // TODO Перед этим методом надо выполнить валидацию.
+    // Убедиться что формат ввода правильный, иначе возможны исключения.
+    private int[][] getStart(List<List<Integer>> lines, int size) {
+        int[][] content = new int[size][size];
+        for (int i = 1; i <= size; i++) {
+            for (int j = 0; j < size; j++) {
+                content[i - 1][j] = lines.get(i).get(j);
+            }
+        }
+        return content;
     }
 
     private List<List<Integer>> readFileLineByLine(String path) throws IOException {
