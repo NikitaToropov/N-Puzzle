@@ -56,21 +56,33 @@ public class BoardUtil {
      */
     public List<Board> expandTheState(Board previousState) {
         List<Board> expandedStates = new ArrayList<>();
+        int i;
+        int j;
 
-        if (isCorrectCoordinates(previousState.emptyCell.i - 1, previousState.emptyCell.j - 1, previousState)) {
-            expandedStates.add(getNewState(previousState.emptyCell.i - 1, previousState.emptyCell.j - 1, previousState));
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i - 1,
+                j = previousState.emptyCell.j,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
         }
-        if (isCorrectCoordinates(previousState.emptyCell.i + 1, previousState.emptyCell.i + 1, previousState)) {
-            expandedStates.add(getNewState(previousState.emptyCell.i + 1, previousState.emptyCell.j + 1, previousState));
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i + 1,
+                j = previousState.emptyCell.j,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
 
         }
-        if (isCorrectCoordinates(previousState.emptyCell.i - 1, previousState.emptyCell.i + 1, previousState)) {
-            expandedStates.add(getNewState(previousState.emptyCell.i - 1, previousState.emptyCell.j + 1, previousState));
-
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i,
+                j = previousState.emptyCell.j - 1,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
         }
-        if (isCorrectCoordinates(previousState.emptyCell.i + 1, previousState.emptyCell.i - 1, previousState)) {
-            expandedStates.add(getNewState(previousState.emptyCell.i + 1, previousState.emptyCell.j - 1, previousState));
-
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i,
+                j = previousState.emptyCell.j + 1,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
         }
         return expandedStates;
     }

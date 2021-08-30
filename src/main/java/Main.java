@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    private static String INPUT_FILE_PATH = "/Users/nikita_toropov/Desktop/N-Puzzle/src/main/resources/npuzzle-4-1.txt";
+    private static String INPUT_FILE_PATH = "src/main/resources/npuzzle-4-1.txt";
 
     public static void main(String[] args) throws IOException {
         Board startBoard = new Reader().readInput(INPUT_FILE_PATH);
