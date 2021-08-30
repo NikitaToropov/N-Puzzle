@@ -1,5 +1,7 @@
 package dto;
 
+import java.util.Arrays;
+
 public class State implements Comparable<State>{
     public final int[][] matrix;
     public final int f; // f-score
@@ -16,5 +18,18 @@ public class State implements Comparable<State>{
     @Override
     public int compareTo(State state) {
         return -(f - state.f);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        State state = (State) o;
+        return Arrays.equals(matrix, state.matrix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(matrix);
     }
 }

@@ -19,6 +19,7 @@ public class Reader {
 
     public static final String CLEAR_LINE_REGEX = "(\\s*\\d\\s*)+"; // without comments
     public static final Pattern CLEAR_LINE_PATTERN = Pattern.compile(CLEAR_LINE_REGEX);
+    public static final int MAXIMUM_VALUE = 999999999;
 
 
     public State readInput(String path) throws IOException {
@@ -29,7 +30,7 @@ public class Reader {
     private State crateGameBoard(List<List<Integer>> lines) {
         int size = lines.get(0).get(0);
         int[][] start = getStart(lines, size);
-        return new State(start, 0, 0, BoardUtil.getEmptyCell(start));
+        return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start));
     }
 
     private int[] getFinish(int len) {

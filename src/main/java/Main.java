@@ -1,12 +1,12 @@
 import dto.Coordinate;
 import dto.State;
 import reading.Reader;
+import resolvers.astar.AStarResolver;
 import utils.BoardUtil;
 import utils.GoalMapGenerator;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 public class Main {
     private static String INPUT_FILE_PATH = "src/main/resources/npuzzle-4-1.txt";
@@ -21,7 +21,10 @@ public class Main {
 
         BoardUtil util = new BoardUtil(goal);
 
-        PriorityQueue<State> expandedStart = util.expandTheState(startState);
-        expandedStart.forEach(BoardUtil::printState);
+//        PriorityQueue<State> expandedStart = util.expandTheState(startState);
+//        expandedStart.forEach(BoardUtil::printState);
+        new AStarResolver(goal, startState, util).resolveIt();
+
+
     }
 }
