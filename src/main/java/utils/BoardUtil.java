@@ -1,11 +1,10 @@
 package utils;
 
-import dto.State;
 import dto.Coordinate;
+import dto.State;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class BoardUtil {
     public static final int EMPTY_CELL_VALUE = 0;
@@ -67,8 +66,8 @@ public class BoardUtil {
      * TODO исключить прошлый стейт
      * Метод раскрытия новых стейтов.
      */
-    public List<State> expandTheState(State previousState) {
-        List<State> expandedStates = new ArrayList<>();
+    public PriorityQueue<State> expandTheState(State previousState) {
+        PriorityQueue<State> expandedStates = new PriorityQueue<>();
         int i;
         int j;
 
@@ -131,7 +130,7 @@ public class BoardUtil {
     }
 
     /**
-     * Метод перемещения ячей на пустое место
+     * Метод перемещения ячейки на пустое место.
      * @param matrix
      * @param firstI
      * @param firstJ

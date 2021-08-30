@@ -15,6 +15,6 @@ public class State implements Comparable<State>{
 
     @Override
     public int compareTo(State state) {
-        return  f - state.f;
+        return -(f - state.f);
     }
 }
