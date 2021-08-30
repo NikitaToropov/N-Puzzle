@@ -1,7 +1,7 @@
 package resolvers;
 
-import dto.Board;
+import dto.State;
 
 public interface Resolver {
-    void resolveIt(Board gameBoard);
+    void resolveIt(State gameState);
 }

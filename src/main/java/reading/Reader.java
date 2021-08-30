@@ -1,13 +1,11 @@
 package reading;
 
-import dto.Board;
+import dto.State;
 import exceptions.WrongFormatException;
 import utils.BoardUtil;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -23,15 +21,15 @@ public class Reader {
     public static final Pattern CLEAR_LINE_PATTERN = Pattern.compile(CLEAR_LINE_REGEX);
 
 
-    public Board readInput(String path) throws IOException {
+    public State readInput(String path) throws IOException {
         List<List<Integer>> lines = readFileLineByLine(path);
         return crateGameBoard(lines);
     }
 
-    private Board crateGameBoard(List<List<Integer>> lines) {
+    private State crateGameBoard(List<List<Integer>> lines) {
         int size = lines.get(0).get(0);
         int[][] start = getStart(lines, size);
-        return new Board(start, size, 0,0, BoardUtil.getEmptyCell(start));
+        return new State(start, 0, 0, BoardUtil.getEmptyCell(start));
     }
 
     private int[] getFinish(int len) {
@@ -77,5 +75,3 @@ public class Reader {
         return Arrays.stream(numbers).map(Integer::parseInt).collect(Collectors.toList());
     }
 }
-
-

@@ -1,6 +1,6 @@
 package utils;
 
-import dto.Board;
+import dto.State;
 import dto.Coordinate;
 
 import java.util.ArrayList;
@@ -11,26 +11,34 @@ public class BoardUtil {
     public static final int EMPTY_CELL_VALUE = 0;
     public final Map<Integer, Coordinate> goal;
 
-    public BoardUtil(Map<Integer, Coordinate> goal) {
+    public  BoardUtil(Map<Integer, Coordinate> goal) {
         this.goal = goal;
     }
 
-    public static void printState(Board board) {
-        printState(board.state);
+    /**
+     * Метод печать матрицы состояния.
+     * @param state
+     */
+    public static void printState(State state) {
+        printState(state.matrix);
     }
 
-    public static void printState(int[][] board) {
+    /**
+     * Метод печать матрицы состояния.
+     * @param matrix
+     */
+    public static void printState(int[][] matrix) {
         System.out.println();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                System.out.printf("%2d ", board[i][j]);
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                System.out.printf("%2d ", matrix[i][j]);
             }
             System.out.println();
         }
     }
 
     /**
-     * H-schore - сумма Манхеттенских расстояния для всех ячеек состояния/
+     * H-schore - сумма Манхеттенских расстояния для всех ячеек состояния.
      */
     public int countHScoreForState(int[][] state) {
         int sum = 0;
@@ -45,6 +53,11 @@ public class BoardUtil {
         return sum;
     }
 
+    /**
+     * Манхеттенское Расстояние ячейки до его финального положения.
+     * @param state Текущее состояние
+     * @return Количество шагов до целевого положения.
+     */
     public int getManhattanDistance(int[][] state, int i, int j) {
         Coordinate current = new Coordinate(i, j, state[i][j]);
         return Math.abs(current.i - goal.get(current.val).i) + Math.abs(current.j - goal.get(current.val).j);
@@ -52,10 +65,10 @@ public class BoardUtil {
 
     /**
      * TODO исключить прошлый стейт
-     * TODO может придется хранить в priorityQue
+     * Метод раскрытия новых стейтов.
      */
-    public List<Board> expandTheState(Board previousState) {
-        List<Board> expandedStates = new ArrayList<>();
+    public List<State> expandTheState(State previousState) {
+        List<State> expandedStates = new ArrayList<>();
         int i;
         int j;
 
@@ -87,12 +100,20 @@ public class BoardUtil {
         return expandedStates;
     }
 
-    private Board getNewState(int newI, int newJ, Board previousState) {
-        int[][] matrix = new int[previousState.size][previousState.size];
+    /**
+     * Конструктор DTO нового состояния.
+     *
+     * @param newI
+     * @param newJ
+     * @param previousState
+     * @return
+     */
+    private State getNewState(int newI, int newJ, State previousState) {
+        int[][] matrix = new int[previousState.matrix.length][previousState.matrix.length];
 
-        for (int i = 0; i < previousState.size; i++) {
-            for (int j = 0; j < previousState.size; j++) {
-                matrix[i][j] = previousState.state[i][j];
+        for (int i = 0; i < previousState.matrix.length; i++) {
+            for (int j = 0; j < previousState.matrix.length; j++) {
+                matrix[i][j] = previousState.matrix[i][j];
             }
         }
         swapCellsInMatrix(
@@ -101,23 +122,30 @@ public class BoardUtil {
                 newJ,
                 previousState.emptyCell.i,
                 previousState.emptyCell.j);
-        return new Board(
+        return new State(
                 matrix,
-                previousState.size,
                 previousState.g + 1,
                 countHScoreForState(matrix) + previousState.g + 1,
                 new Coordinate(newI, newJ, EMPTY_CELL_VALUE)
         );
     }
 
+    /**
+     * Метод перемещения ячей на пустое место
+     * @param matrix
+     * @param firstI
+     * @param firstJ
+     * @param secondI
+     * @param secondJ
+     */
     private void swapCellsInMatrix(int[][] matrix, int firstI, int firstJ, int secondI, int secondJ) {
         int tmp = matrix[firstI][firstJ];
         matrix[firstI][firstJ] = matrix[secondI][secondJ];
         matrix[secondI][secondJ] = tmp;
     }
 
-    private boolean isCorrectCoordinates(int i, int j, Board board) {
-        return i >= 0 && i < board.size && j >= 0 && j < board.size;
+    private boolean isCorrectCoordinates(int i, int j, State state) {
+        return i >= 0 && i < state.matrix.length && j >= 0 && j < state.matrix.length;
     }
 
     public static Coordinate getEmptyCell(int[][] matrix) {
