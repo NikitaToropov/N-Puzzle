@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class Main {
-    private static String INPUT_FILE_PATH = "src/main/resources/npuzzle-4-1.txt";
+    private static String INPUT_FILE_PATH = "src/main/resources/npuzzle-3-1.txt";
 
     public static void main(String[] args) throws IOException {
         State startState = new Reader().readInput(INPUT_FILE_PATH);
