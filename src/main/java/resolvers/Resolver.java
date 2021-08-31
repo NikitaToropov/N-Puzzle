@@ -27,42 +27,29 @@ public class Resolver {
         System.out.println("======== RESOLVING STARTS HERE ========");
 
         State tmp = start;
-        open = util.expandTheState(start);
-        int i = 0;
-//        while (i < 10 && tmp != null && tmp.f != tmp.g) {
-        while (tmp != null && tmp.f != tmp.g) {
+        while (tmp.f != tmp.g) {
+            open.addAll(util.expandTheState(tmp));
             close.add(tmp);
             tmp = getNewState(open, close);
-            System.out.println();
-            if (tmp == null)
-                break;
-            System.out.println("step n = " + tmp.g);
-            BoardUtil.printState(tmp);
-
-            close.addAll(open);
-            open = util.expandTheState(tmp);
-            i++;
+//            BoardUtil.printState(tmp);
+            open.addAll(util.expandTheState(tmp));
         }
+
+        for (State state = tmp; state != null; state = state.parent) {
+            BoardUtil.printState(state);
+        }
+        System.out.println("num of steps = " + tmp.g);
+
     }
 
     private State getNewState(Queue<State> open, Set<State> close) {
-        State tmp;
         while (!open.isEmpty()) {
-            tmp = open.remove();
+            State tmp = open.remove();
             if (!close.contains(tmp)) {
-                close.addAll(open);
                 return tmp;
             }
             close.add(tmp);
         }
         return null;
     }
-
-    public static Comparator<State> stateComparator = new Comparator<State>() {
-
-        @Override
-        public int compare(State firstState, State secondState) {
-            return -(secondState.f - firstState.f);
-        }
-    };
 }

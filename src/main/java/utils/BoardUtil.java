@@ -125,7 +125,8 @@ public class BoardUtil {
                 matrix,
                 previousState.g + 1,
                 countHScoreForState(matrix) + previousState.g + 1,
-                new Coordinate(newI, newJ, EMPTY_CELL_VALUE)
+                new Coordinate(newI, newJ, EMPTY_CELL_VALUE),
+                previousState
         );
     }
 

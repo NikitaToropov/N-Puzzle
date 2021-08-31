@@ -30,7 +30,7 @@ public class Reader {
     private State crateGameBoard(List<List<Integer>> lines) {
         int size = lines.get(0).get(0);
         int[][] start = getStart(lines, size);
-        return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start));
+        return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
     }
 
     private int[] getFinish(int len) {

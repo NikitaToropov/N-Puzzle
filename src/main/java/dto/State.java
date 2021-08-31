@@ -7,17 +7,19 @@ public class State implements Comparable<State> {
     public final int f; // f-score
     public final int g; // g-score - номер шага
     public final Coordinate emptyCell; // координаты пустой ячейки
+    public final State parent;
 
-    public State(int[][] start, int g, int f, Coordinate emptyCell) {
+    public State(int[][] start, int g, int f, Coordinate emptyCell, State parent) {
         this.matrix = start;
         this.g = g;
         this.f = f;
         this.emptyCell = emptyCell;
+        this.parent = parent;
     }
 
     @Override
     public int compareTo(State state) {
-        return (f - state.f);
+        return f - state.f;
     }
 
     @Override
