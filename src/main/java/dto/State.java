@@ -2,7 +2,7 @@ package dto;
 
 import java.util.Arrays;
 
-public class State implements Comparable<State>{
+public class State implements Comparable<State> {
     public final int[][] matrix;
     public final int f; // f-score
     public final int g; // g-score - номер шага
@@ -17,7 +17,7 @@ public class State implements Comparable<State>{
 
     @Override
     public int compareTo(State state) {
-        return -(f - state.f);
+        return (f - state.f);
     }
 
     @Override
@@ -25,11 +25,20 @@ public class State implements Comparable<State>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return Arrays.equals(matrix, state.matrix);
+        for (int i = 0; i < matrix.length; i++) {
+            if (!Arrays.equals(matrix[i], state.matrix[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(matrix);
+        int hashCode = 0;
+        for (int[] line : matrix) {
+            hashCode += Arrays.hashCode(line);
+        }
+        return hashCode;
     }
 }

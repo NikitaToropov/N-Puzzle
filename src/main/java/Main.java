@@ -1,7 +1,7 @@
 import dto.Coordinate;
 import dto.State;
 import reading.Reader;
-import resolvers.astar.AStarResolver;
+import resolvers.Resolver;
 import utils.BoardUtil;
 import utils.GoalMapGenerator;
 
@@ -23,7 +23,7 @@ public class Main {
 
 //        PriorityQueue<State> expandedStart = util.expandTheState(startState);
 //        expandedStart.forEach(BoardUtil::printState);
-        new AStarResolver(goal, startState, util).resolveIt();
+        new Resolver(goal, startState, util).resolveIt();
 
 
     }
