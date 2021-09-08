@@ -55,8 +55,20 @@ public class GoalMapGenerator {
                 goalMap.put(matrix[i][j], new Coordinate(i, j, matrix[i][j]));
             }
         }
-        goalMap.put(0, goalMap.get(matrix.length * matrix.length));
-        goalMap.remove(matrix.length * matrix.length);
+        setZeroToCenter(matrix);
         return new Goal(goalMap, matrix);
+    }
+
+    private static void setZeroToCenter(int[][] matrix) {
+        int biggest = matrix.length * matrix.length;
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                if (matrix[i][j] == biggest) {
+                    matrix[i][j] = 0;
+                    return;
+                }
+            }
+        }
     }
 }
