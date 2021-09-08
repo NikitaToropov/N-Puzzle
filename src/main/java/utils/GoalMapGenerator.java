@@ -1,6 +1,7 @@
 package utils;
 
 import dto.Coordinate;
+import dto.Goal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,10 +11,10 @@ public class GoalMapGenerator {
     private GoalMapGenerator() {
     }
 
-    public static Map<Integer, Coordinate> getGoal(int n) {
+    public static Goal getGoal(int n) {
         int[][] matrix = gitSpiralMatrix(n);
         BoardUtil.printState(matrix);
-        return createMap(matrix);
+        return createGoal(matrix);
     }
 
     private static int[][] gitSpiralMatrix(int n) {
@@ -46,15 +47,16 @@ public class GoalMapGenerator {
         return matrix;
     }
 
-    private static Map<Integer, Coordinate> createMap(int[][] matrix) {
-        Map<Integer, Coordinate> goal = new HashMap<>();
+    private static Goal createGoal(int[][] matrix) {
+        Map<Integer, Coordinate> goalMap = new HashMap<>();
 
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
-                goal.put(matrix[i][j], new Coordinate(i, j, matrix[i][j]));
+                goalMap.put(matrix[i][j], new Coordinate(i, j, matrix[i][j]));
             }
         }
-        goal.put(0, goal.get(matrix.length * matrix.length));
-        return goal;
+        goalMap.put(0, goalMap.get(matrix.length * matrix.length));
+        goalMap.remove(matrix.length * matrix.length);
+        return new Goal(goalMap, matrix);
     }
 }

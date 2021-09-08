@@ -1,16 +1,16 @@
 package utils;
 
 import dto.Coordinate;
+import dto.Goal;
 import dto.State;
 
-import java.util.Map;
 import java.util.PriorityQueue;
 
 public class BoardUtil {
     public static final int EMPTY_CELL_VALUE = 0;
-    public final Map<Integer, Coordinate> goal;
+    public final Goal goal;
 
-    public  BoardUtil(Map<Integer, Coordinate> goal) {
+    public  BoardUtil(Goal goal) {
         this.goal = goal;
     }
 
@@ -59,7 +59,7 @@ public class BoardUtil {
      */
     public int getManhattanDistance(int[][] state, int i, int j) {
         Coordinate current = new Coordinate(i, j, state[i][j]);
-        return Math.abs(current.i - goal.get(current.val).i) + Math.abs(current.j - goal.get(current.val).j);
+        return Math.abs(current.i - goal.goalMap.get(current.val).i) + Math.abs(current.j - goal.goalMap.get(current.val).j);
     }
 
     /**
@@ -157,5 +157,14 @@ public class BoardUtil {
             }
         }
         return null;
+    }
+    
+    public void printGoal() {
+        System.out.println("+++++++++++++++++++ PRING GOAL +++++++++++++++++++");
+        printState(goal.matrix);
+        System.out.println();
+        goal.goalMap.forEach((k, v) -> System.out.println(k + ":" + " i=" + v.i + " j=" + v.j));
+        System.out.println();
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 }

@@ -1,19 +1,22 @@
 package resolvers;
 
-import dto.Coordinate;
+import dto.Goal;
 import dto.State;
 import utils.BoardUtil;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
 
 public class Resolver {
-    final Map<Integer, Coordinate> goal;
+    final Goal goal;
     final BoardUtil util;
     final State start;
     Queue<State> open;
     final Set<State> close;
 
-    public Resolver(Map<Integer, Coordinate> goal, State start, BoardUtil util) {
+    public Resolver(Goal goal, State start, BoardUtil util) {
         this.goal = goal;
         this.start = start;
         this.util = util;
