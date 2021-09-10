@@ -4,6 +4,8 @@ import dto.Coordinate;
 import dto.Goal;
 import dto.State;
 
+import java.util.PriorityQueue;
+
 public class SideBoardUtil extends AbstractBoardUtil {
 
     private int l;
@@ -13,21 +15,21 @@ public class SideBoardUtil extends AbstractBoardUtil {
     public static final int NOT_SOLVED = 0;
     public static final int SOLVED = 1;
 
-    final int[][] solvingMatrix;
+    public final int[][] solvingMatrix;
 
     public SideBoardUtil(Goal goal) {
         super(goal);
-        this.solvingMatrix = getEmptySolvingMatrix(goal.goalMap.size());
+        this.solvingMatrix = getEmptySolvingMatrix(goal.matrix.length);
         this.l = 0;
-        this.r = goal.matrix.length;
+        this.r = 0;
         this.u = 0;
-        this.d = goal.matrix.length;
+        this.d = 0;
     }
 
     /**
      * H-schore - для последнего квадрата 3x3
      */
-    public int countHScoreForLastSquare(int[][] state, int l, int r, int u, int d) {
+    public int countHScoreForLastSquare(int[][] state) {
         int sum = 0;
 
         for (int i = l; i <= r; i++) {
@@ -50,20 +52,9 @@ public class SideBoardUtil extends AbstractBoardUtil {
 
     /**
      * Конструктор DTO нового состояния.
-     *
-     * @param newI
-     * @param newJ
-     * @param previousState
-     * @return
      */
     private State getNewState(int newI, int newJ, State previousState) {
-        int[][] matrix = new int[previousState.matrix.length][previousState.matrix.length];
-
-        for (int i = 0; i < previousState.matrix.length; i++) {
-            for (int j = 0; j < previousState.matrix.length; j++) {
-                matrix[i][j] = previousState.matrix[i][j];
-            }
-        }
+        int[][] matrix = copyMatrix(previousState.matrix);
         swapCellsInMatrix(
                 matrix,
                 newI,
@@ -84,20 +75,20 @@ public class SideBoardUtil extends AbstractBoardUtil {
      */
     private int countHScoreForState(int[][] matrix) {
         if (l == r) {
-            return verticalHScore(matrix, l, u, d);
+            return verticalHScore(matrix);
         } else if (u == d) {
-            return horizontalHScore(matrix, u, l, r);
+            return horizontalHScore(matrix);
         } else {
-            return countHScoreForLastSquare(matrix, l, r, u, d);
+            return countHScoreForLastSquare(matrix);
         }
     }
 
     /**
      * H-score для горизонтальных сторон.
      */
-    public int horizontalHScore(int[][] state, int i, int l, int r) {
+    public int horizontalHScore(int[][] state) {
         int sum = 0;
-        for (int j = l; j <= r; j++) {
+        for (int j = l, i = u; j <= r; j++) {
             sum += getManhattanDistance(state, i, j);
         }
         return sum;
@@ -106,9 +97,9 @@ public class SideBoardUtil extends AbstractBoardUtil {
     /**
      * H-score для вертикальных сторон.
      */
-    public int verticalHScore(int[][] state, int j, int u, int d) {
+    public int verticalHScore(int[][] state) {
         int sum = 0;
-        for (int i = u; i <= d; i++) {
+        for (int i = u, j = l; i <= d; i++) {
             sum += getManhattanDistance(state, i, j);
         }
         return sum;
@@ -125,15 +116,80 @@ public class SideBoardUtil extends AbstractBoardUtil {
         return matrix;
     }
 
-    public void setHorizontalAsSolved(int i, int l, int r) {
-        for (int j = l; j <= r; j++) {
+    public void setLineAsSolved() {
+        if (u == d) {
+            setHorizontalAsSolved();
+        }
+        else if (l == r) {
+            setVerticalAsSolved();
+        }
+    }
+
+    private void setHorizontalAsSolved() {
+        for (int j = l, i = u; j <= r; j++) {
             solvingMatrix[i][j] = SOLVED;
         }
     }
 
-    public void setVerticalAsSolved(int j, int u, int d) {
-        for (int i = u; i <= d; i++) {
+    private void setVerticalAsSolved() {
+        for (int i = u, j = l; i <= d; i++) {
             solvingMatrix[i][j] = SOLVED;
         }
     }
+
+    public void printResolvingReverse(State finish) {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++ REVERSE RESOLVING +++++++++++");
+        while (finish != null) {
+            printState(finish);
+            finish = finish.parent;
+        }
+        System.out.println("+++++++++++++++++++ END +++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+    }
+
+    public void setLimits(int l, int r, int u, int d) {
+        this.l = l;
+        this.r = r;
+        this.u = u;
+        this.d = d;
+    }
+
+    /**
+     * Метод раскрытия новых стейтов.
+     */
+    public PriorityQueue<State> expandTheState(State previousState) {
+        PriorityQueue<State> expandedStates = new PriorityQueue<>();
+        int i;
+        int j;
+
+
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i - 1,
+                j = previousState.emptyCell.j,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
+        }
+        // down
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i + 1,
+                j = previousState.emptyCell.j,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
+        }
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i,
+                j = previousState.emptyCell.j - 1,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
+        }
+        if (isCorrectCoordinates(
+                i = previousState.emptyCell.i,
+                j = previousState.emptyCell.j + 1,
+                previousState)) {
+            expandedStates.add(getNewState(i, j, previousState));
+        }
+        return expandedStates;
+    }
+
 }

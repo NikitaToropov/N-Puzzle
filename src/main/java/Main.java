@@ -4,6 +4,7 @@ import reading.Reader;
 import resolvers.SideResolver;
 import utils.BoardUtil;
 import utils.GoalMapGenerator;
+import utils.SideBoardUtil;
 
 import java.io.IOException;
 
@@ -18,11 +19,13 @@ public class Main {
         Goal goal = GoalMapGenerator.getGoal(startState.matrix.length);
         System.out.println();
 
-        BoardUtil util = new BoardUtil(goal);
-        util.printGoal();
+//        BoardUtil util = new BoardUtil(goal);
+//        util.printGoal();
 
 //        new Resolver(goal, startState, util).resolveIt();
 
+        SideBoardUtil util = new SideBoardUtil(goal);
+        util.printGoal();
         new SideResolver(goal,startState, util).resolveIt();
     }
 }

@@ -35,7 +35,7 @@ public class Resolver {
             close.add(tmp);
             tmp = getNewState(open, close);
 //            BoardUtil.printState(tmp);
-            open.addAll(util.expandTheState(tmp));
+            open.addAll(util.expandTheState(tmp)); // TODO зачем 2 раза
         }
 
         for (State state = tmp; state != null; state = state.parent) {
@@ -51,7 +51,7 @@ public class Resolver {
             if (!close.contains(tmp)) {
                 return tmp;
             }
-            close.add(tmp);
+            close.add(tmp); // TODO в этом, кажется нет смысла
         }
         return null;
     }

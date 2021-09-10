@@ -13,7 +13,7 @@ public class GoalMapGenerator {
 
     public static Goal getGoal(int n) {
         int[][] matrix = gitSpiralMatrix(n);
-        BoardUtil.printState(matrix);
+        BoardUtil.printMatrix(matrix);
         return createGoal(matrix);
     }
 
@@ -55,20 +55,23 @@ public class GoalMapGenerator {
                 goalMap.put(matrix[i][j], new Coordinate(i, j, matrix[i][j]));
             }
         }
-        setZeroToCenter(matrix);
+        Coordinate zero = setZeroToCenter(matrix);
+        goalMap.remove(matrix.length * matrix.length);
+        goalMap.put(zero.val, zero);
         return new Goal(goalMap, matrix);
     }
 
-    private static void setZeroToCenter(int[][] matrix) {
+    private static Coordinate setZeroToCenter(int[][] matrix) {
         int biggest = matrix.length * matrix.length;
 
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
                 if (matrix[i][j] == biggest) {
                     matrix[i][j] = 0;
-                    return;
+                    return new Coordinate(i, j, 0);
                 }
             }
         }
+        return null;
     }
 }

@@ -4,7 +4,7 @@ import dto.Coordinate;
 import dto.Goal;
 import dto.State;
 
-public class AbstractBoardUtil {
+public abstract class AbstractBoardUtil {
     public static final int EMPTY_CELL_VALUE = 0;
 
     public final Goal goal;
@@ -19,7 +19,8 @@ public class AbstractBoardUtil {
      * @param state
      */
     public static void printState(State state) {
-        printState(state.matrix);
+        System.out.println("g-score = " + state.g + "  f-score = " + state.f);
+        printMatrix(state.matrix);
     }
 
     /**
@@ -27,14 +28,14 @@ public class AbstractBoardUtil {
      *
      * @param matrix
      */
-    public static void printState(int[][] matrix) {
-        System.out.println();
+    public static void printMatrix(int[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
                 System.out.printf("%2d ", matrix[i][j]);
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     /**
@@ -44,7 +45,7 @@ public class AbstractBoardUtil {
      */
     public void printGoal() {
         System.out.println("+++++++++++++++++++ PRING GOAL +++++++++++++++++++");
-        printState(goal.matrix);
+        printMatrix(goal.matrix);
         System.out.println();
         goal.goalMap.forEach((k, v) -> System.out.println(k + ":" + " i=" + v.i + " j=" + v.j));
         System.out.println();
@@ -59,6 +60,13 @@ public class AbstractBoardUtil {
     public int getManhattanDistance(int[][] state, int i, int j) {
         Coordinate current = new Coordinate(i, j, state[i][j]);
         return Math.abs(current.i - goal.goalMap.get(current.val).i) + Math.abs(current.j - goal.goalMap.get(current.val).j);
+    }
+
+    /**
+     * Манхеттенское Расстояние ячейки до его финального положения.
+     */
+    public int getManhattanDistance(Coordinate first, Coordinate second) {
+        return Math.abs(first.i - second.i) + Math.abs(first.j - second.j);
     }
 
     /**
@@ -80,4 +88,16 @@ public class AbstractBoardUtil {
         }
         return null;
     }
+
+    public int[][] copyMatrix(int[][] matrix) {
+        int [][] newMatrix = new int[matrix.length][matrix.length];
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                newMatrix[i][j] = matrix[i][j];
+            }
+        }
+        return newMatrix;
+    }
+
 }

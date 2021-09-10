@@ -3,10 +3,14 @@ package reading;
 import dto.State;
 import exceptions.WrongFormatException;
 import utils.AbstractBoardUtil;
-import utils.BoardUtil;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -20,7 +24,7 @@ public class Reader {
 
     public static final String CLEAR_LINE_REGEX = "(\\s*\\d\\s*)+"; // without comments
     public static final Pattern CLEAR_LINE_PATTERN = Pattern.compile(CLEAR_LINE_REGEX);
-    public static final int MAXIMUM_VALUE = 999999999;
+    public static final int MAXIMUM_VALUE = Integer.MAX_VALUE; // yeah its smart!!!
 
 
     public State readInput(String path) throws IOException {

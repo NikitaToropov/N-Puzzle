@@ -6,8 +6,8 @@ import dto.State;
 
 import java.util.PriorityQueue;
 
-public class BoardUtil extends AbstractBoardUtil{
-    public  BoardUtil(Goal goal) {
+public class BoardUtil extends AbstractBoardUtil {
+    public BoardUtil(Goal goal) {
         super(goal);
     }
 
@@ -66,20 +66,9 @@ public class BoardUtil extends AbstractBoardUtil{
 
     /**
      * Конструктор DTO нового состояния.
-     *
-     * @param newI
-     * @param newJ
-     * @param previousState
-     * @return
      */
     private State getNewState(int newI, int newJ, State previousState) {
-        int[][] matrix = new int[previousState.matrix.length][previousState.matrix.length];
-
-        for (int i = 0; i < previousState.matrix.length; i++) {
-            for (int j = 0; j < previousState.matrix.length; j++) {
-                matrix[i][j] = previousState.matrix[i][j];
-            }
-        }
+        int[][] matrix = copyMatrix(previousState.matrix);
         swapCellsInMatrix(
                 matrix,
                 newI,
