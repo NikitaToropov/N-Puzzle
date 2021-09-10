@@ -13,7 +13,7 @@ public class Resolver {
     final Goal goal;
     final BoardUtil util;
     final State start;
-    Queue<State> open;
+    final Queue<State> open;
     final Set<State> close;
 
     public Resolver(Goal goal, State start, BoardUtil util) {

@@ -2,6 +2,7 @@ package reading;
 
 import dto.State;
 import exceptions.WrongFormatException;
+import utils.AbstractBoardUtil;
 import utils.BoardUtil;
 
 import java.io.*;
@@ -30,7 +31,7 @@ public class Reader {
     private State crateGameBoard(List<List<Integer>> lines) {
         int size = lines.get(0).get(0);
         int[][] start = getStart(lines, size);
-        return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
+        return new State(start, 0, MAXIMUM_VALUE, AbstractBoardUtil.getEmptyCell(start), null);
     }
 
     private int[] getFinish(int len) {

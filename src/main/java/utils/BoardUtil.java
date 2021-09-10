@@ -6,34 +6,9 @@ import dto.State;
 
 import java.util.PriorityQueue;
 
-public class BoardUtil {
-    public static final int EMPTY_CELL_VALUE = 0;
-    public final Goal goal;
-
+public class BoardUtil extends AbstractBoardUtil{
     public  BoardUtil(Goal goal) {
-        this.goal = goal;
-    }
-
-    /**
-     * Метод печать матрицы состояния.
-     * @param state
-     */
-    public static void printState(State state) {
-        printState(state.matrix);
-    }
-
-    /**
-     * Метод печать матрицы состояния.
-     * @param matrix
-     */
-    public static void printState(int[][] matrix) {
-        System.out.println();
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.printf("%2d ", matrix[i][j]);
-            }
-            System.out.println();
-        }
+        super(goal);
     }
 
     /**
@@ -52,18 +27,8 @@ public class BoardUtil {
         return sum;
     }
 
-    /**
-     * Манхеттенское Расстояние ячейки до его финального положения.
-     * @param state Текущее состояние
-     * @return Количество шагов до целевого положения.
-     */
-    public int getManhattanDistance(int[][] state, int i, int j) {
-        Coordinate current = new Coordinate(i, j, state[i][j]);
-        return Math.abs(current.i - goal.goalMap.get(current.val).i) + Math.abs(current.j - goal.goalMap.get(current.val).j);
-    }
 
     /**
-     * TODO исключить прошлый стейт
      * Метод раскрытия новых стейтов.
      */
     public PriorityQueue<State> expandTheState(State previousState) {
@@ -130,41 +95,7 @@ public class BoardUtil {
         );
     }
 
-    /**
-     * Метод перемещения ячейки на пустое место.
-     * @param matrix
-     * @param firstI
-     * @param firstJ
-     * @param secondI
-     * @param secondJ
-     */
-    private void swapCellsInMatrix(int[][] matrix, int firstI, int firstJ, int secondI, int secondJ) {
-        int tmp = matrix[firstI][firstJ];
-        matrix[firstI][firstJ] = matrix[secondI][secondJ];
-        matrix[secondI][secondJ] = tmp;
-    }
-
     private boolean isCorrectCoordinates(int i, int j, State state) {
         return i >= 0 && i < state.matrix.length && j >= 0 && j < state.matrix.length;
-    }
-
-    public static Coordinate getEmptyCell(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                if (matrix[i][j] == EMPTY_CELL_VALUE) {
-                    return new Coordinate(i, j, EMPTY_CELL_VALUE);
-                }
-            }
-        }
-        return null;
-    }
-    
-    public void printGoal() {
-        System.out.println("+++++++++++++++++++ PRING GOAL +++++++++++++++++++");
-        printState(goal.matrix);
-        System.out.println();
-        goal.goalMap.forEach((k, v) -> System.out.println(k + ":" + " i=" + v.i + " j=" + v.j));
-        System.out.println();
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 }
