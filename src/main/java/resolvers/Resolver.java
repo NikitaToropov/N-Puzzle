@@ -32,10 +32,8 @@ public class Resolver {
         State tmp = start;
         while (tmp.f != tmp.g) {
             open.addAll(util.expandTheState(tmp));
+            tmp = getNextState(open, close);
             close.add(tmp);
-            tmp = getNewState(open, close);
-//            BoardUtil.printState(tmp);
-            open.addAll(util.expandTheState(tmp));
         }
 
         for (State state = tmp; state != null; state = state.parent) {
@@ -45,13 +43,15 @@ public class Resolver {
 
     }
 
-    private State getNewState(Queue<State> open, Set<State> close) {
+    /**
+     * Возвращает первое по приоритету состояние которое еще не содержиться в close.
+     */
+    private State getNextState(Queue<State> open, Set<State> close) {
         while (!open.isEmpty()) {
             State tmp = open.remove();
             if (!close.contains(tmp)) {
                 return tmp;
             }
-            close.add(tmp);
         }
         return null;
     }

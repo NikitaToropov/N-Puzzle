@@ -2,12 +2,17 @@ package dto;
 
 import java.util.Arrays;
 
+/**
+ * Класс для хранения параметров состояния.
+ */
 public class State implements Comparable<State> {
-    public final int[][] matrix;
+
+    public final static int EMPTY_CELL_VALUE = 0;
+    public final int[][] matrix; // состояние игрового поля
     public final int f; // f-score
     public final int g; // g-score - номер шага
     public final Coordinate emptyCell; // координаты пустой ячейки
-    public final State parent;
+    public final State parent; // прошлое (родительское состояние)
 
     public State(int[][] start, int g, int f, Coordinate emptyCell, State parent) {
         this.matrix = start;
@@ -42,5 +47,14 @@ public class State implements Comparable<State> {
             hashCode += Arrays.hashCode(line);
         }
         return hashCode;
+    }
+
+    /**
+     * Копия матрицы текущего состояния.
+     */
+    public int[][] copyMatrix() {
+        return Arrays.stream(matrix)
+                .map(int[]::clone)
+                .toArray(int[][]::new);
     }
 }

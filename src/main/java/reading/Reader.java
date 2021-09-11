@@ -12,14 +12,13 @@ import java.util.stream.Collectors;
 
 public class Reader {
 
-
     public static final String COMMENT_CHAR = "#";
     public static final String COMMENTED_LINE_REGEX = "^\\s*" + COMMENT_CHAR;
     public static final Pattern COMMENTED_LINE_PATTERN = Pattern.compile(COMMENTED_LINE_REGEX);
 
     public static final String CLEAR_LINE_REGEX = "(\\s*\\d\\s*)+"; // without comments
     public static final Pattern CLEAR_LINE_PATTERN = Pattern.compile(CLEAR_LINE_REGEX);
-    public static final int MAXIMUM_VALUE = 999999999;
+    public static final int MAXIMUM_VALUE = Integer.MAX_VALUE;
 
 
     public State readInput(String path) throws IOException {
@@ -31,15 +30,6 @@ public class Reader {
         int size = lines.get(0).get(0);
         int[][] start = getStart(lines, size);
         return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
-    }
-
-    private int[] getFinish(int len) {
-        int[] content = new int[len];
-        for (int i = 0; i < len - 1; i++) {
-            content[i] = i + 1;
-        }
-        content[len - 1] = 0;
-        return content;
     }
 
     // TODO Перед этим методом надо выполнить валидацию.
