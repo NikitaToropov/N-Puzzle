@@ -79,7 +79,8 @@ public class SideBoardUtil extends AbstractBoardUtil {
         } else if (u == d) {
             return horizontalHScore(matrix);
         } else {
-            return countHScoreForLastSquare(matrix);
+            return -10;
+//            return countHScoreForLastSquare(matrix);
         }
     }
 
@@ -89,7 +90,7 @@ public class SideBoardUtil extends AbstractBoardUtil {
     public int horizontalHScore(int[][] state) {
         int sum = 0;
         for (int j = l, i = u; j <= r; j++) {
-            sum += getManhattanDistance(state, i, j);
+            sum += getReverseManhattanDistance(state, i, j);
         }
         return sum;
     }
@@ -100,7 +101,7 @@ public class SideBoardUtil extends AbstractBoardUtil {
     public int verticalHScore(int[][] state) {
         int sum = 0;
         for (int i = u, j = l; i <= d; i++) {
-            sum += getManhattanDistance(state, i, j);
+            sum += getReverseManhattanDistance(state, i, j);
         }
         return sum;
     }
@@ -119,10 +120,27 @@ public class SideBoardUtil extends AbstractBoardUtil {
     public void setLineAsSolved() {
         if (u == d) {
             setHorizontalAsSolved();
-        }
-        else if (l == r) {
+        } else if (l == r) {
             setVerticalAsSolved();
         }
+    }
+
+    /**
+     * Манхеттенское расстояние целевой линии до текущего состояния.
+     */
+    private int getReverseManhattanDistance(int[][] state, int i, int j) {
+        for (int k = 0; k < state.length; k++) {
+            for (int m = 0; m < state.length; m++) {
+                if (state[k][m] == goal.matrix[i][j]) {
+                    return getManhattanDistanceByCoordinates(i, j, k, m);
+                }
+            }
+        }
+        return 0;
+    }
+
+    public int getManhattanDistanceByCoordinates(int i1, int j1, int i2, int j2) {
+        return Math.abs(i1 - i2) + Math.abs(j1 - j2);
     }
 
     private void setHorizontalAsSolved() {
