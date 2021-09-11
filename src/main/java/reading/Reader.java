@@ -2,10 +2,15 @@ package reading;
 
 import dto.State;
 import exceptions.WrongFormatException;
-import utils.ResolvingUtil;
+import utils.BoardUtil;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -27,23 +32,42 @@ public class Reader {
     }
 
     private State crateGameBoard(List<List<Integer>> lines) {
-        int size = lines.get(0).get(0);
-        int[][] start = getStart(lines, size);
-        return new State(start, 0, MAXIMUM_VALUE, ResolvingUtil.getEmptyCell(start), null);
+        int size = lines.remove(0).get(0);
+        int[][] start = getStartMatrix(lines, size);
+        // TODO добавить проверку на значения ячеек чтобы они были в диапазоне он 0 <= x < size * size
+        return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
     }
 
-    // TODO Перед этим методом надо выполнить валидацию.
-    // Убедиться что формат ввода правильный, иначе возможны исключения.
-    private int[][] getStart(List<List<Integer>> lines, int size) {
-        int[][] content = new int[size][size];
-        for (int i = 1; i <= size; i++) {
+
+    /**
+     * Переводит список списков в матрицу интов.
+     * @param lines Список списков интов, первая лини содержит только размер стороны поля.
+     * @param size Размер стороны поля.
+     * @return Матрица текущего состояния поля.
+     */
+    private int[][] getStartMatrix(List<List<Integer>> lines, int size) {
+        checkLinesLen(lines, size);
+
+        int[][] matrix = new int[size][size];
+        for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                content[i - 1][j] = lines.get(i).get(j);
+                matrix[i][j] = lines.get(i).get(j);
             }
         }
-        return content;
+        return matrix;
     }
 
+    private void checkLinesLen(List<List<Integer>> lines, int size) {
+        lines.forEach(l -> {
+            if (l.size() < size) throw new WrongFormatException();
+        });
+    }
+
+    /**
+     * Метод читает входные параметры по линиям.
+     * Если находит посторинние комментарии
+     * или комментарии "обрезающие" карту выбрасывает исключение форматирования входного файла.
+     */
     private List<List<Integer>> readFileLineByLine(String path) throws IOException {
         List<List<Integer>> lines = new ArrayList<>();
         File file = new File(path);
@@ -61,6 +85,9 @@ public class Reader {
         return lines;
     }
 
+    /**
+     * Отделяет "чистый ввод" от коментариев.
+     */
     private List<Integer> parseCleanLine(String line) {
         String[] numbers = line.split("\\s+");
         return Arrays.stream(numbers).map(Integer::parseInt).collect(Collectors.toList());

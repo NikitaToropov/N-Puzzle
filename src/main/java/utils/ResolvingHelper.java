@@ -6,10 +6,10 @@ import dto.State;
 
 import java.util.PriorityQueue;
 
-public class ResolvingUtil {
+public class ResolvingHelper {
     public final Goal goal;
 
-    public ResolvingUtil(Goal goal) {
+    public ResolvingHelper(Goal goal) {
         this.goal = goal;
     }
 
@@ -110,49 +110,5 @@ public class ResolvingUtil {
      */
     private boolean isCorrectCoordinates(int i, int j) {
         return i >= 0 && i < goal.matrix.length && j >= 0 && j < goal.matrix.length;
-    }
-
-    /**
-     * Метод ищет координаты нулевой ячейки.
-     */
-    public static Coordinate getEmptyCell(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                if (matrix[i][j] == State.EMPTY_CELL_VALUE) {
-                    return new Coordinate(i, j, State.EMPTY_CELL_VALUE);
-                }
-            }
-        }
-        return null;
-    }
-
-    public void printGoal() {
-        System.out.println("+++++++++++++++++++ PRING GOAL +++++++++++++++++++");
-        printMatrix(goal.matrix);
-        System.out.println();
-        goal.goalMap.forEach((k, v) -> System.out.println(k + ":" + " i=" + v.i + " j=" + v.j));
-        System.out.println();
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
-    }
-
-    /**
-     * Метод печати состояния.
-     */
-    public static void printState(State state) {
-        System.out.println();
-        System.out.println("g = " + state.g + ", f = " + state.f);
-        printMatrix(state.matrix);
-    }
-
-    /**
-     * Метод печати матрицы состояния.
-     */
-    public static void printMatrix(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.printf("%2d ", matrix[i][j]);
-            }
-            System.out.println();
-        }
     }
 }

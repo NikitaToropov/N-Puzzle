@@ -2,7 +2,8 @@ package resolvers;
 
 import dto.Goal;
 import dto.State;
-import utils.ResolvingUtil;
+import utils.BoardUtil;
+import utils.ResolvingHelper;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -11,12 +12,12 @@ import java.util.Set;
 
 public class Resolver {
     final Goal goal;
-    final ResolvingUtil util;
+    final ResolvingHelper util;
     final State start;
     Queue<State> open;
     final Set<State> close;
 
-    public Resolver(Goal goal, State start, ResolvingUtil util) {
+    public Resolver(Goal goal, State start, ResolvingHelper util) {
         this.goal = goal;
         this.start = start;
         this.util = util;
@@ -37,7 +38,7 @@ public class Resolver {
         }
 
         for (State state = tmp; state != null; state = state.parent) {
-            ResolvingUtil.printState(state);
+            BoardUtil.printState(state);
         }
         System.out.println("num of steps = " + tmp.g);
 
