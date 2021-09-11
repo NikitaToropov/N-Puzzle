@@ -2,7 +2,7 @@ import dto.Goal;
 import dto.State;
 import reading.Reader;
 import resolvers.Resolver;
-import utils.BoardUtil;
+import utils.ResolvingUtil;
 import utils.GoalGenerator;
 
 import java.io.IOException;
@@ -13,12 +13,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         State startState = new Reader().readInput(INPUT_FILE_PATH);
-        BoardUtil.printState(startState);
+        ResolvingUtil.printState(startState);
 
         Goal goal = GoalGenerator.getGoal(startState.matrix.length);
         System.out.println();
 
-        BoardUtil util = new BoardUtil(goal);
+        ResolvingUtil util = new ResolvingUtil(goal);
         util.printGoal();
 
         new Resolver(goal, startState, util).resolveIt();
