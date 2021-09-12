@@ -1,6 +1,7 @@
 package reading;
 
 import dto.State;
+import exceptions.WrongCellException;
 import exceptions.WrongFormatException;
 import utils.BoardUtil;
 
@@ -34,8 +35,29 @@ public class Reader {
     private static State crateGameBoard(List<List<Integer>> lines) {
         int size = lines.remove(0).get(0);
         int[][] start = getStartMatrix(lines, size);
-        // TODO добавить проверку на значения ячеек чтобы они были в диапазоне он 0 <= x < size * size
+        checkCellValues(start);
         return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
+    }
+
+    /**
+     * Проверка на корректность значений ячеек.
+     *
+     * @param matrix Поле пазла.
+     */
+    private static void checkCellValues(int[][] matrix) {
+        int max_value = matrix.length * matrix.length;
+        boolean[] isBeenMet = new boolean[max_value];
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                int cellValue = matrix[i][j];
+                if (cellValue < 0 || cellValue >= max_value || isBeenMet[cellValue]) {
+                    throw new WrongCellException();
+                } else {
+                    isBeenMet[cellValue] = true;
+                }
+            }
+        }
     }
 
 

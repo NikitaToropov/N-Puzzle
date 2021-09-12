@@ -1,6 +1,7 @@
 package reading;
 
 import dto.State;
+import exceptions.WrongCellException;
 import exceptions.WrongFormatException;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -38,7 +39,7 @@ public class ReaderTest {
                 {"src/test/resources/maps/invalid/wrong_format_npuzzle-3-1.txt", WrongFormatException.class, 0},
                 {"src/test/resources/maps/invalid/wrong_format_npuzzle-3-2.txt", WrongFormatException.class, 0},
                 {"src/test/resources/maps/invalid/wrong_format_npuzzle-3-3.txt", WrongFormatException.class, 0},
-//                {"src/test/resources/maps/invalid/wrong_cell_value_npuzzle-3.txt", WrongFormatException.class, 0},
+                {"src/test/resources/maps/invalid/wrong_cell_value_npuzzle-3.txt", WrongCellException.class, 0},
                 {"src/test/resources/maps/valid/npuzzle-3-1.txt", null, 3},
                 {"src/test/resources/maps/valid/npuzzle-3-2.txt", null, 3},
                 {"src/test/resources/maps/valid/npuzzle-3-3.txt", null, 3}
