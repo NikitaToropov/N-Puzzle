@@ -1,6 +1,7 @@
 package reading;
 
 import dto.State;
+import exceptions.UnsolvablePuzzleException;
 import exceptions.WrongCellException;
 import exceptions.WrongFormatException;
 import org.testng.Assert;
@@ -35,11 +36,12 @@ public class ReaderTest {
     public Object[][] getInvalidPath() {
         return new Object[][]{
                 {"invalid_path.txt", FileNotFoundException.class, 0},
-                {"src/test/resources/maps/invalid/empty_npuzzle-3-3.txt", WrongFormatException.class, 0},
+                {"src/test/resources/maps/invalid/empty_npuzzle-3.txt", WrongFormatException.class, 0},
                 {"src/test/resources/maps/invalid/wrong_format_npuzzle-3-1.txt", WrongFormatException.class, 0},
                 {"src/test/resources/maps/invalid/wrong_format_npuzzle-3-2.txt", WrongFormatException.class, 0},
                 {"src/test/resources/maps/invalid/wrong_format_npuzzle-3-3.txt", WrongFormatException.class, 0},
                 {"src/test/resources/maps/invalid/wrong_cell_value_npuzzle-3.txt", WrongCellException.class, 0},
+                {"src/test/resources/maps/invalid/unsolvable_npuzzle-4.txt", UnsolvablePuzzleException.class, 0},
                 {"src/test/resources/maps/valid/npuzzle-3-1.txt", null, 3},
                 {"src/test/resources/maps/valid/npuzzle-3-2.txt", null, 3},
                 {"src/test/resources/maps/valid/npuzzle-3-3.txt", null, 3}

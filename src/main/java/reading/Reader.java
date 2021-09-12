@@ -1,6 +1,7 @@
 package reading;
 
 import dto.State;
+import exceptions.UnsolvablePuzzleException;
 import exceptions.WrongCellException;
 import exceptions.WrongFormatException;
 import utils.BoardUtil;
@@ -36,6 +37,9 @@ public class Reader {
         int size = lines.remove(0).get(0);
         int[][] start = getStartMatrix(lines, size);
         checkCellValues(start);
+        if (!BoardUtil.isSolvable(start)) {
+            throw new UnsolvablePuzzleException();
+        }
         return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
     }
 
