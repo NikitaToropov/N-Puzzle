@@ -1,0 +1,4 @@
+3
+3 2 8
+1 4 0
+8 7 5 # second cell with 8 value

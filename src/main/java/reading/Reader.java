@@ -1,6 +1,8 @@
 package reading;
 
 import dto.State;
+import exceptions.UnsolvablePuzzleException;
+import exceptions.WrongCellException;
 import exceptions.WrongFormatException;
 import utils.BoardUtil;
 
@@ -26,26 +28,51 @@ public class Reader {
     public static final int MAXIMUM_VALUE = Integer.MAX_VALUE;
 
 
-    public State readInput(String path) throws IOException {
+    public static State readInput(String path) throws IOException {
         List<List<Integer>> lines = readFileLineByLine(path);
         return crateGameBoard(lines);
     }
 
-    private State crateGameBoard(List<List<Integer>> lines) {
+    private static State crateGameBoard(List<List<Integer>> lines) {
         int size = lines.remove(0).get(0);
         int[][] start = getStartMatrix(lines, size);
-        // TODO добавить проверку на значения ячеек чтобы они были в диапазоне он 0 <= x < size * size
+        checkCellValues(start);
+        if (!BoardUtil.isSolvable(start)) {
+            throw new UnsolvablePuzzleException();
+        }
         return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
+    }
+
+    /**
+     * Проверка на корректность значений ячеек.
+     *
+     * @param matrix Поле пазла.
+     */
+    private static void checkCellValues(int[][] matrix) {
+        int max_value = matrix.length * matrix.length;
+        boolean[] isBeenMet = new boolean[max_value];
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                int cellValue = matrix[i][j];
+                if (cellValue < 0 || cellValue >= max_value || isBeenMet[cellValue]) {
+                    throw new WrongCellException();
+                } else {
+                    isBeenMet[cellValue] = true;
+                }
+            }
+        }
     }
 
 
     /**
      * Переводит список списков в матрицу интов.
+     *
      * @param lines Список списков интов, первая лини содержит только размер стороны поля.
-     * @param size Размер стороны поля.
+     * @param size  Размер стороны поля.
      * @return Матрица текущего состояния поля.
      */
-    private int[][] getStartMatrix(List<List<Integer>> lines, int size) {
+    private static int[][] getStartMatrix(List<List<Integer>> lines, int size) {
         checkLinesLen(lines, size);
 
         int[][] matrix = new int[size][size];
@@ -57,9 +84,9 @@ public class Reader {
         return matrix;
     }
 
-    private void checkLinesLen(List<List<Integer>> lines, int size) {
+    private static void checkLinesLen(List<List<Integer>> lines, int size) {
         lines.forEach(l -> {
-            if (l.size() < size) throw new WrongFormatException();
+            if (l.size() != size) throw new WrongFormatException();
         });
     }
 
@@ -68,7 +95,7 @@ public class Reader {
      * Если находит посторинние комментарии
      * или комментарии "обрезающие" карту выбрасывает исключение форматирования входного файла.
      */
-    private List<List<Integer>> readFileLineByLine(String path) throws IOException {
+    private static List<List<Integer>> readFileLineByLine(String path) throws IOException {
         List<List<Integer>> lines = new ArrayList<>();
         File file = new File(path);
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -82,13 +109,16 @@ public class Reader {
             else
                 throw new WrongFormatException();
         }
+        if (lines.isEmpty()) {
+            throw new WrongFormatException();
+        }
         return lines;
     }
 
     /**
      * Отделяет "чистый ввод" от коментариев.
      */
-    private List<Integer> parseCleanLine(String line) {
+    private static List<Integer> parseCleanLine(String line) {
         String[] numbers = line.split("\\s+");
         return Arrays.stream(numbers).map(Integer::parseInt).collect(Collectors.toList());
     }

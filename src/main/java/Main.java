@@ -16,10 +16,6 @@ public class Main {
         State startState = new Reader().readInput(INPUT_FILE_PATH);
 
         BoardUtil.printState(startState);
-        if (!BoardUtil.isSolvable(startState.matrix)) {
-            System.out.println("THE PUZZLE NOT SOLVABLE");
-            return;
-        }
 
         Goal goal = GoalGenerator.getGoal(startState.matrix.length);
         System.out.println();
