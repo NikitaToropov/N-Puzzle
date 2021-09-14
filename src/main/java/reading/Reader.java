@@ -52,9 +52,8 @@ public class Reader {
         int max_value = matrix.length * matrix.length;
         boolean[] isBeenMet = new boolean[max_value];
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                int cellValue = matrix[i][j];
+        for (int[] ints : matrix) {
+            for (int cellValue : ints) {
                 if (cellValue < 0 || cellValue >= max_value || isBeenMet[cellValue]) {
                     throw new WrongCellException();
                 } else {
@@ -119,7 +118,7 @@ public class Reader {
      * Отделяет "чистый ввод" от коментариев.
      */
     private static List<Integer> parseCleanLine(String line) {
-        String[] numbers = line.split("\\s+");
+        String[] numbers = line.trim().split("\\s+");
         return Arrays.stream(numbers).map(Integer::parseInt).collect(Collectors.toList());
     }
 }
