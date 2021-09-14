@@ -17,7 +17,7 @@ public class ReaderTest {
             dataProvider = "invalid_paths"
     )
     public void shouldValidateInput(String path, Class<? extends Exception> exceptionType, int expectedSize) throws Exception {
-        State state = null;
+        State state;
 
         try {
             state = Reader.readInput(path);
@@ -42,9 +42,18 @@ public class ReaderTest {
                 {"src/test/resources/maps/invalid/wrong_format_npuzzle-3-3.txt", WrongFormatException.class, 0},
                 {"src/test/resources/maps/invalid/wrong_cell_value_npuzzle-3.txt", WrongCellException.class, 0},
                 {"src/test/resources/maps/invalid/unsolvable_npuzzle-4.txt", UnsolvablePuzzleException.class, 0},
-                {"src/test/resources/maps/valid/npuzzle-3-1.txt", null, 3},
                 {"src/test/resources/maps/valid/npuzzle-3-2.txt", null, 3},
-                {"src/test/resources/maps/valid/npuzzle-3-3.txt", null, 3}
+                {"src/test/resources/maps/valid/npuzzle-3-3.txt", null, 3},
+                {"src/test/resources/maps/valid/npuzzle-3-1.txt", null, 3},
+
+
+                {"src/test/resources/maps/invalid/puzzle_gen_unsolved_3x3-15-01.txt", UnsolvablePuzzleException.class, 0},
+                {"src/test/resources/maps/invalid/puzzle_gen_unsolved_3x3-15-03.txt", UnsolvablePuzzleException.class, 0},
+                {"src/test/resources/maps/invalid/puzzle_gen_unsolved_3x3-15-03.txt", UnsolvablePuzzleException.class, 0},
+
+                {"src/test/resources/maps/valid/puzzle_gen_3x3-15-03.txt", null, 3},
+                {"src/test/resources/maps/valid/puzzle_gen_3x3-15-03.txt", null, 3},
+                {"src/test/resources/maps/valid/puzzle_gen_3x3-15-03.txt", null, 3}
         };
     }
 }
