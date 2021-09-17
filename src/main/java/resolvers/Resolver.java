@@ -31,6 +31,7 @@ public class Resolver {
         System.out.println();
         System.out.println();
         System.out.println("======== RESOLVING STARTS HERE ========");
+        long startTime = System.nanoTime();
 
         State tmp = start;
         while (tmp.f != tmp.g) {
@@ -41,11 +42,9 @@ public class Resolver {
         }
 
         new Report(tmp, timeComplexity, sizeComplexity);
-//        for (State state = tmp; state != null; state = state.parent) {
-//            BoardUtil.printState(state);
-//        }
-//        System.out.println("num of steps = " + tmp.g);
-
+        long finishTime = System.nanoTime();
+        System.out.println("==========================================");
+        System.out.println("time = " + (finishTime - startTime) / 1_000_000  + " миллисекунд");
     }
 
     /**

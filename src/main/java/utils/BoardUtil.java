@@ -75,14 +75,15 @@ public class BoardUtil {
         int[] arr = new int[n * n];
 
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                arr[i * n + j] = matrix[i][j];
-            }
+            System.arraycopy(matrix[i], 0, arr, i * n, n);
         }
         return arr;
     }
 
 
+    /**
+     * Метод для поиска пустой ячейки считая снизу.
+     */
     private static int findXPosition(int[][] puzzle) {
         int n = puzzle.length;
         for (int i = n - 1; i >= 0; i--) {
@@ -99,7 +100,7 @@ public class BoardUtil {
      * Метод печати целевого состояния и содержимого его goalMap.
      */
     public static void printGoal(Goal goal) {
-        System.out.println("+++++++++++++++++++ PRING GOAL +++++++++++++++++++");
+        System.out.println("+++++++++++++++++++ PRINT GOAL +++++++++++++++++++");
         printMatrix(goal.matrix);
         System.out.println();
         goal.goalMap.forEach((k, v) -> System.out.println(k + ":" + " i=" + v.i + " j=" + v.j));
@@ -120,9 +121,9 @@ public class BoardUtil {
      * Метод печати матрицы состояния.
      */
     public static void printMatrix(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.printf("%2d ", matrix[i][j]);
+        for (int[] ints : matrix) {
+            for (int anInt : ints) {
+                System.out.printf("%2d ", anInt);
             }
             System.out.println();
         }

@@ -100,7 +100,7 @@ public class Reader {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         while ((line = br.readLine()) != null) {
-            if (COMMENTED_LINE_PATTERN.matcher(line).find())
+            if (COMMENTED_LINE_PATTERN.matcher(line).find() || line.isEmpty())
                 continue;
             Matcher matcher = CLEAR_LINE_PATTERN.matcher(line);
             if (matcher.find())

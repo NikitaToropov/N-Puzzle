@@ -47,29 +47,16 @@ public class ResolvingHelper {
         PriorityQueue<State> expandedStates = new PriorityQueue<>();
         int i, j;
 
-        if (isCorrectCoordinates(
-                i = previousState.emptyCell.i - 1,
-                j = previousState.emptyCell.j)
-        ) {
+        if (isCorrectCoordinates(i = previousState.emptyCell.i - 1, j = previousState.emptyCell.j)) {
             expandedStates.add(getNewState(i, j, previousState));
         }
-        if (isCorrectCoordinates(
-                i = previousState.emptyCell.i + 1,
-                j = previousState.emptyCell.j)
-        ) {
-            expandedStates.add(getNewState(i, j, previousState));
-
-        }
-        if (isCorrectCoordinates(
-                i = previousState.emptyCell.i,
-                j = previousState.emptyCell.j - 1)
-        ) {
+        if (isCorrectCoordinates(i = previousState.emptyCell.i + 1, j = previousState.emptyCell.j)) {
             expandedStates.add(getNewState(i, j, previousState));
         }
-        if (isCorrectCoordinates(
-                i = previousState.emptyCell.i,
-                j = previousState.emptyCell.j + 1)
-        ) {
+        if (isCorrectCoordinates(i = previousState.emptyCell.i, j = previousState.emptyCell.j - 1)) {
+            expandedStates.add(getNewState(i, j, previousState));
+        }
+        if (isCorrectCoordinates(i = previousState.emptyCell.i, j = previousState.emptyCell.j + 1)) {
             expandedStates.add(getNewState(i, j, previousState));
         }
         return expandedStates;
@@ -110,5 +97,23 @@ public class ResolvingHelper {
      */
     private boolean isCorrectCoordinates(int i, int j) {
         return i >= 0 && i < goal.matrix.length && j >= 0 && j < goal.matrix.length;
+    }
+
+    /**
+     * Конструктор стартового состояния пазла.
+     *
+     * @param preParty Предзаполненное стартовое состояние.
+     * @return startState
+     */
+    public State getStartState(State preParty) {
+        int[][] matrix = preParty.copyMatrix();
+
+        return new State(
+                matrix,
+                0,
+                countHScoreForState(matrix),
+                preParty.emptyCell,
+                null
+        );
     }
 }
