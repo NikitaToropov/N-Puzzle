@@ -16,7 +16,7 @@ public class GoalGenerator {
     }
 
     public static Goal getGoal(int n) {
-        int[][] matrix = gitSpiralMatrix(n);
+        int[][] matrix = getSpiralMatrix(n);
         return createGoal(matrix);
     }
 
@@ -27,7 +27,7 @@ public class GoalGenerator {
      * @param n Длина стороны матрицы.
      * @return Матрица int[n][n].
      */
-    private static int[][] gitSpiralMatrix(int n) {
+    public static int[][] getSpiralMatrix(int n) {
         int[][] matrix = new int[n][n];
         int biggestVal = n * n;
         int l = 0, t = 0, r = n - 1, b = n - 1;
