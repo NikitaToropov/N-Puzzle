@@ -3,8 +3,10 @@ package utils;
 import dto.Coordinate;
 import dto.Goal;
 import dto.State;
+import heuristifcs.Heuristic;
 
-public class BoardUtil {
+public class
+BoardUtil {
 
     private BoardUtil() {
     }
@@ -95,6 +97,21 @@ public class BoardUtil {
         return n;
     }
 
+    /**
+     * Конструктор стартового состояния пазла.
+     *
+     * @param preParty Предзаполненное стартовое состояние.
+     * @return startState
+     */
+    public static State getStartState(int[][] preParty, Goal goal, Heuristic heuristic) {
+        return new State(
+                preParty,
+                0,
+                heuristic.countHScore(preParty, goal),
+                BoardUtil.getEmptyCell(preParty),
+                null
+        );
+    }
 
     /**
      * Метод печати целевого состояния и содержимого его goalMap.
@@ -127,5 +144,21 @@ public class BoardUtil {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Метод проверяет, не выходит ли координаты за рамки карты.
+     */
+    public static boolean isCorrectCoordinates(int i, int j, int size) {
+        return i >= 0 && i < size && j >= 0 && j < size;
+    }
+
+    /**
+     * Метод свопа ячеек.
+     */
+    public static void swapCellsInMatrix(int[][] matrix, int firstI, int firstJ, int secondI, int secondJ) {
+        int tmp = matrix[firstI][firstJ];
+        matrix[firstI][firstJ] = matrix[secondI][secondJ];
+        matrix[secondI][secondJ] = tmp;
     }
 }

@@ -1,6 +1,5 @@
 package reading;
 
-import dto.State;
 import exceptions.UnsolvablePuzzleException;
 import exceptions.WrongCellException;
 import exceptions.WrongFormatException;
@@ -17,10 +16,10 @@ public class ReaderTest {
             dataProvider = "invalid_paths"
     )
     public void shouldValidateInput(String path, Class<? extends Exception> exceptionType, int expectedSize) throws Exception {
-        State state;
+        int[][] matrix;
 
         try {
-            state = Reader.readInput(path);
+            matrix = Reader.readInput(path);
         } catch (Exception e) {
             Assert.assertEquals(e.getClass(), exceptionType);
             return;
@@ -28,7 +27,7 @@ public class ReaderTest {
         if (exceptionType != null) {
             throw new Exception("Валидация пропустила невалидный тест.");
         }
-        Assert.assertEquals(state.matrix.length, expectedSize);
+        Assert.assertEquals(matrix.length, expectedSize);
     }
 
 

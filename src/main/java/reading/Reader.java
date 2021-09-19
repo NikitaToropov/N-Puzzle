@@ -1,6 +1,5 @@
 package reading;
 
-import dto.State;
 import exceptions.UnsolvablePuzzleException;
 import exceptions.WrongCellException;
 import exceptions.WrongFormatException;
@@ -25,22 +24,21 @@ public class Reader {
 
     public static final String CLEAR_LINE_REGEX = "(\\s*\\d\\s*)+"; // without comments
     public static final Pattern CLEAR_LINE_PATTERN = Pattern.compile(CLEAR_LINE_REGEX);
-    public static final int MAXIMUM_VALUE = Integer.MAX_VALUE;
 
 
-    public static State readInput(String path) throws IOException {
+    public static int[][] readInput(String path) throws IOException {
         List<List<Integer>> lines = readFileLineByLine(path);
         return crateGameBoard(lines);
     }
 
-    private static State crateGameBoard(List<List<Integer>> lines) {
+    private static int[][] crateGameBoard(List<List<Integer>> lines) {
         int size = lines.remove(0).get(0);
         int[][] start = getStartMatrix(lines, size);
         checkCellValues(start);
         if (!BoardUtil.isSolvable(start)) {
             throw new UnsolvablePuzzleException();
         }
-        return new State(start, 0, MAXIMUM_VALUE, BoardUtil.getEmptyCell(start), null);
+        return start;
     }
 
     /**
