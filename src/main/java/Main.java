@@ -2,6 +2,7 @@ import dto.Goal;
 import dto.State;
 import heuristifcs.ManhattanHeuristic;
 import reading.Reader;
+import resolvers.IDAStarResolver;
 import resolvers.Resolver;
 import utils.BoardUtil;
 import resolvers.ResolvingHelper;
@@ -21,6 +22,7 @@ public class Main {
         State startState = BoardUtil.getStartState(startMatrix, goal, heuristic);
         BoardUtil.printState(startState);
         System.out.println();
-        new Resolver(goal, startState, resolvingHelper).resolveIt();
+//        new Resolver(goal, startState, resolvingHelper).resolveIt();
+        new IDAStarResolver(goal, startState, resolvingHelper).resolveIt();
     }
 }
