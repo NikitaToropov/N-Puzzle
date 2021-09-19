@@ -4,17 +4,14 @@ import dto.Goal;
 import dto.Report;
 import dto.State;
 
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class Resolver {
     final Goal goal;
     final ResolvingHelper util;
     final State start;
-    Queue<State> open;
-    final Set<State> close;
+    final Queue<State> open;
+    final Set<String> close;
     private int timeComplexity = 0;
     private int sizeComplexity = 0;
 
@@ -37,7 +34,7 @@ public class Resolver {
             open.addAll(util.expandTheState(tmp));
             sizeComplexity = Math.max(open.size() + close.size(), sizeComplexity);
             tmp = getNextState(open, close);
-            close.add(tmp);
+            close.add(Arrays.deepToString(tmp.matrix));
         }
 
         new Report(tmp, timeComplexity, sizeComplexity);
@@ -49,11 +46,11 @@ public class Resolver {
     /**
      * Возвращает первое по приоритету состояние которое еще не содержиться в close.
      */
-    private State getNextState(Queue<State> open, Set<State> close) {
+    private State getNextState(Queue<State> open, Set<String> close) {
         while (!open.isEmpty()) {
             State tmp = open.remove();
             timeComplexity += 1;
-            if (!close.contains(tmp)) {
+            if (!close.contains(Arrays.deepToString(tmp.matrix))) {
                 return tmp;
             }
         }
