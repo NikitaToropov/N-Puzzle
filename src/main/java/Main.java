@@ -1,6 +1,9 @@
 import dto.Goal;
 import dto.State;
+import heuristifcs.EuclideanHeuristic;
+import heuristifcs.Heuristic;
 import heuristifcs.ManhattanHeuristic;
+import heuristifcs.SimplestHeuristic;
 import reading.Reader;
 import resolvers.IDAStarResolver;
 import resolvers.Resolver;
@@ -17,7 +20,9 @@ public class Main {
         int[][] startMatrix = Reader.readInput(INPUT_FILE_PATH);
         Goal goal = GoalGenerator.getGoal(startMatrix.length);
         BoardUtil.printGoal(goal);
-        ManhattanHeuristic heuristic = new ManhattanHeuristic();
+//        Heuristic heuristic = new ManhattanHeuristic();
+//        Heuristic heuristic = new EuclideanHeuristic();
+        Heuristic heuristic = new SimplestHeuristic();
         ResolvingHelper resolvingHelper = new ResolvingHelper(goal, heuristic);
         State startState = BoardUtil.getStartState(startMatrix, goal, heuristic);
         BoardUtil.printState(startState);

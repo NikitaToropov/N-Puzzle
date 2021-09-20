@@ -44,7 +44,7 @@ public class Resolver {
     }
 
     /**
-     * Возвращает первое по приоритету состояние которое еще не содержиться в close.
+     * Возвращает первое по приоритету состояние которое еще не содержится в close.
      */
     private State getNextState(Queue<State> open, Set<String> close) {
         while (!open.isEmpty()) {
