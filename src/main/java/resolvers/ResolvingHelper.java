@@ -7,6 +7,7 @@ import heuristifcs.Heuristic;
 import utils.BoardUtil;
 
 import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 public class ResolvingHelper {
     public final Goal goal;
@@ -58,5 +59,11 @@ public class ResolvingHelper {
                 new Coordinate(newI, newJ, State.EMPTY_CELL_VALUE),
                 previousState
         );
+    }
+
+    private boolean isGranny(State state) {
+        return state.parent != null
+                && state.parent.parent != null
+                && state.parent.parent.equals(state);
     }
 }

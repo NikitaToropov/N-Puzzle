@@ -11,7 +11,7 @@ public class Resolver {
     final ResolvingHelper util;
     final State start;
     final Queue<State> open;
-    final Set<String> close;
+    final Set<State> close;
     private int timeComplexity = 0;
     private int sizeComplexity = 0;
 
@@ -32,9 +32,9 @@ public class Resolver {
         State tmp = start;
         while (tmp.f != tmp.g) {
             open.addAll(util.expandTheState(tmp));
+            close.add(tmp);
             sizeComplexity = Math.max(open.size() + close.size(), sizeComplexity);
             tmp = getNextState(open, close);
-            close.add(Arrays.deepToString(tmp.matrix));
         }
 
         new Report(tmp, timeComplexity, sizeComplexity);
@@ -46,11 +46,11 @@ public class Resolver {
     /**
      * Возвращает первое по приоритету состояние которое еще не содержится в close.
      */
-    private State getNextState(Queue<State> open, Set<String> close) {
+    private State getNextState(Queue<State> open, Set<State> close) {
         while (!open.isEmpty()) {
             State tmp = open.remove();
             timeComplexity += 1;
-            if (!close.contains(Arrays.deepToString(tmp.matrix))) {
+            if (!close.contains(tmp)) {
                 return tmp;
             }
         }

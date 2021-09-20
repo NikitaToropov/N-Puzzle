@@ -20,9 +20,9 @@ public class Main {
         int[][] startMatrix = Reader.readInput(INPUT_FILE_PATH);
         Goal goal = GoalGenerator.getGoal(startMatrix.length);
         BoardUtil.printGoal(goal);
-//        Heuristic heuristic = new ManhattanHeuristic();
+        Heuristic heuristic = new ManhattanHeuristic();
 //        Heuristic heuristic = new EuclideanHeuristic();
-        Heuristic heuristic = new SimplestHeuristic();
+//        Heuristic heuristic = new SimplestHeuristic();
         ResolvingHelper resolvingHelper = new ResolvingHelper(goal, heuristic);
         State startState = BoardUtil.getStartState(startMatrix, goal, heuristic);
         BoardUtil.printState(startState);
