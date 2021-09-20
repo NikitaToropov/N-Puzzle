@@ -1,14 +1,13 @@
 import dto.Goal;
+import dto.Report;
 import dto.State;
-import heuristifcs.EuclideanHeuristic;
 import heuristifcs.Heuristic;
 import heuristifcs.ManhattanHeuristic;
-import heuristifcs.SimplestHeuristic;
 import reading.Reader;
+import resolvers.AStarResolver;
 import resolvers.IDAStarResolver;
-import resolvers.Resolver;
-import utils.BoardUtil;
 import resolvers.ResolvingHelper;
+import utils.BoardUtil;
 import utils.GoalGenerator;
 
 import java.io.IOException;
@@ -19,15 +18,19 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int[][] startMatrix = Reader.readInput(INPUT_FILE_PATH);
         Goal goal = GoalGenerator.getGoal(startMatrix.length);
-        BoardUtil.printGoal(goal);
-        Heuristic heuristic = new ManhattanHeuristic();
+
 //        Heuristic heuristic = new EuclideanHeuristic();
 //        Heuristic heuristic = new SimplestHeuristic();
-        ResolvingHelper resolvingHelper = new ResolvingHelper(goal, heuristic);
+        Heuristic heuristic = new ManhattanHeuristic();
         State startState = BoardUtil.getStartState(startMatrix, goal, heuristic);
-        BoardUtil.printState(startState);
-        System.out.println();
-        new Resolver(goal, startState, resolvingHelper).resolveIt();
-//        new IDAStarResolver(goal, startState, resolvingHelper).resolveIt();
+
+        BoardUtil.printStartState(startState);
+
+        ResolvingHelper resolvingHelper = new ResolvingHelper(goal, heuristic);
+
+        Report report = startMatrix.length <= 3
+                ? new AStarResolver(goal, startState, resolvingHelper).resolveIt()
+                : new IDAStarResolver(goal, startState, resolvingHelper).resolveIt();
+        report.printResolvingResult();
     }
 }

@@ -9,11 +9,14 @@ import java.util.PriorityQueue;
 /**
  * Класс для решения пазла алгоритмом IDA Star.
  */
-public class IDAStarResolver {
+public class IDAStarResolver implements Resolver{
     final Goal goal;
     final ResolvingHelper helper;
     final State start;
     private int threshold;
+    private int timeComplexity = 0;
+    private int sizeComplexity = 0;
+    private int tmpSizeComplexity = 0;
 
     public IDAStarResolver(Goal goal, State start, ResolvingHelper helper) {
         this.goal = goal;
@@ -22,19 +25,21 @@ public class IDAStarResolver {
         this.threshold = start.f;
     }
 
-    public void resolveIt() {
-        System.out.println();
-        System.out.println();
-        System.out.println("======== RESOLVING STARTS HERE ========");
+    @Override
+    public Report resolveIt() {
+        long startTime = System.nanoTime();
 
         State tmp = start;
         while (tmp.f != tmp.g) {
-            System.out.println("resolving threshold = " + threshold);
+            System.out.println("Resolving threshold = " + threshold);
+            tmpSizeComplexity = 0;
             tmp = search(start);
+            sizeComplexity = Math.max(tmpSizeComplexity, sizeComplexity);
             this.threshold++;
         }
+        long timeInterval = System.nanoTime() - startTime;
 
-        new Report(tmp, 0, 0);
+        return new Report(tmp, timeComplexity, sizeComplexity, timeInterval);
     }
 
     private State search(State parent) {
@@ -43,10 +48,12 @@ public class IDAStarResolver {
             return parent;
         }
         PriorityQueue<State> children = helper.expandTheState(parent);
+        tmpSizeComplexity += children.size();
         State closest = parent;
 
         while (!children.isEmpty()) {
             State tmp = children.remove();
+            timeComplexity++;
             if (isGranny(tmp)) {
                 continue;
             }
