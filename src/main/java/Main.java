@@ -2,8 +2,10 @@ import dto.Goal;
 import dto.Report;
 import dto.State;
 import exceptions.UnsolvablePuzzleException;
+import heuristifcs.EuclideanHeuristic;
 import heuristifcs.Heuristic;
 import heuristifcs.ManhattanHeuristic;
+import heuristifcs.SimplestHeuristic;
 import reading.Reader;
 import resolvers.AStarResolver;
 import resolvers.IDAStarResolver;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+    private static Heuristic heuristic = new ManhattanHeuristic();
 
     public static void main(String[] args) throws IOException {
 
@@ -28,7 +31,7 @@ public class Main {
 
 //        Heuristic heuristic = new EuclideanHeuristic();
 //        Heuristic heuristic = new SimplestHeuristic();
-        Heuristic heuristic = new ManhattanHeuristic();
+//        Heuristic heuristic = new ManhattanHeuristic();
         State startState = BoardUtil.getStartState(startMatrix, goal, heuristic);
 
         BoardUtil.printStartState(startState);
@@ -43,8 +46,16 @@ public class Main {
 
     private static int[][] readFromInput() {
         Scanner scanner = new Scanner(System.in);
-        int[][] matrix;
         String line = "";
+        do {
+            System.out.println("Выбери эвристику:");
+            System.out.println(" - 's' Количество ячеек не на своем месте");
+            System.out.println(" - 'm' Манхеттенское расстояние");
+            System.out.println(" - 'e' Эвклидово расстояние");
+            line = scanner.nextLine().trim();
+        } while (!line.equals("s") && !line.equals("m") && !line.equals("e"));
+        setHeuristic(line);
+
         do {
             System.out.println("Выбери какой пазл будем решать и введи:");
             System.out.println(" - 'p' если хочешь решить пазл из файла");
@@ -77,7 +88,6 @@ public class Main {
                     System.out.println("Ты ввел что-то не правильно. Попробуй снова!");
                 }
             }
-
         } else {
             while (true) {
                 System.out.println("Просто введи абсолютный путь к файлу");
@@ -89,5 +99,13 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static void setHeuristic(String line) {
+        heuristic = line.equals("s")
+                ? new SimplestHeuristic()
+                : line.equals("m")
+                ? new ManhattanHeuristic()
+                : new EuclideanHeuristic();
     }
 }
