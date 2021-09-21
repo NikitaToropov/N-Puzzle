@@ -72,13 +72,18 @@ public class Reader {
     private static int[][] getStartMatrix(List<List<Integer>> lines, int size) {
         checkLinesLen(lines, size);
 
-        int[][] matrix = new int[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                matrix[i][j] = lines.get(i).get(j);
+        try {
+
+            int[][] matrix = new int[size][size];
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    matrix[i][j] = lines.get(i).get(j);
+                }
             }
+            return matrix;
+        } catch (Exception e) {
+            throw new WrongFormatException();
         }
-        return matrix;
     }
 
     private static void checkLinesLen(List<List<Integer>> lines, int size) {

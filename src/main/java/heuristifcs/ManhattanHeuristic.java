@@ -6,7 +6,7 @@ import dto.Goal;
 public class ManhattanHeuristic implements Heuristic {
 
     /**
-     * H-score - сумма Манхеттенских расстояния для всех ячеек состояния.
+     * H-score - сумма Манхеттенских расстояний для всех ячеек состояния.
      */
     @Override
     public int countHScore(int[][] state, Goal goal) {

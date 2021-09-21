@@ -125,6 +125,12 @@ BoardUtil {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
+    public static void printStartState(State start) {
+        System.out.println("+++++++++++++++++ START STATE ++++++++++++++++++++");
+        printState(start);
+        System.out.println();
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++");
+    }
     /**
      * Метод печати состояния.
      */
