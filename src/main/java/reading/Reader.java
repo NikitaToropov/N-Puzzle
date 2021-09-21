@@ -35,9 +35,6 @@ public class Reader {
         int size = lines.remove(0).get(0);
         int[][] start = getStartMatrix(lines, size);
         checkCellValues(start);
-        if (!BoardUtil.isSolvable(start)) {
-            throw new UnsolvablePuzzleException();
-        }
         return start;
     }
 

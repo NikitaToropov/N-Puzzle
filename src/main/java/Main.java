@@ -1,6 +1,7 @@
 import dto.Goal;
 import dto.Report;
 import dto.State;
+import exceptions.UnsolvablePuzzleException;
 import heuristifcs.Heuristic;
 import heuristifcs.ManhattanHeuristic;
 import reading.Reader;
@@ -19,8 +20,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         int[][] startMatrix = readFromInput();
+        if (!BoardUtil.isSolvable(startMatrix)) {
+            throw new UnsolvablePuzzleException();
+        }
 
-//        int[][] startMatrix = Reader.readInput(INPUT_FILE_PATH);
         Goal goal = GoalGenerator.getGoal(startMatrix.length);
 
 //        Heuristic heuristic = new EuclideanHeuristic();
@@ -50,16 +53,25 @@ public class Main {
         } while (!line.equals("g") && !line.equals("p"));
 
         if (line.equals("g")) {
+            System.out.println("Ок, теперь введи параметры пазла в одну линию пжлст");
             while (true) {
-                System.out.println("Ок, теперь введи параметры пазла в одну линию пжлст");
-                System.out.println("[размер пазла] [решаемый пазл или нет(boolean)] [запутанность]");
+                System.out.println("размер пазла     - не больше 15");
+                System.out.println("решаемость пазла - true/false");
+                System.out.println("запутанность     - не больше 100 000");
+                System.out.println("[размер] [решаемость] [запутанность]");
                 line = scanner.nextLine();
                 try {
                     String[] params = line.split(" ");
                     int size = Integer.parseInt(params[0]);
                     boolean isSolvable = Boolean.parseBoolean(params[1]);
                     int iterations = Integer.parseInt((params[2]));
-                    return new PuzzleGenerator(size, isSolvable, iterations).getNewPuzzle();
+                    if (size < 2 || size > 15) {
+                        System.out.println("Ты ввел неправильный размер");
+                    } else if (iterations < 0 || iterations > 100_000) {
+                        System.out.println("Ты ввел неправильный размер");
+                    } else {
+                        return new PuzzleGenerator(size, isSolvable, iterations).getNewPuzzle();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("Ты ввел что-то не правильно. Попробуй снова!");
